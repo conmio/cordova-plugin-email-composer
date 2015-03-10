@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-    Copyright 2013-2014 appPlant UG
+    Copyright 2013-2015 appPlant UG
 
     Licensed to the Apache Software Foundation (ASF) under one
     or more contributor license agreements.  See the NOTICE file
@@ -24,7 +24,7 @@
 <plugin xmlns="http://apache.org/cordova/ns/plugins/1.0"
         xmlns:android="http://schemas.android.com/apk/res/android"
         id="com.conmio.cordova.plugin.email-composer"
-        version="0.8.200">
+        version="0.8.201">
 
     <name>EmailComposer</name>
 
