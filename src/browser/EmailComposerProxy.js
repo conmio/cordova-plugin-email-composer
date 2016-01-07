@@ -1,5 +1,3 @@
-/* globals Windows: true */
-
 /*
     Copyright 2013-2015 appPlant UG
 
@@ -31,7 +29,7 @@
  * @param {Array} args
  *      Interface arguments
  */
-exports.isAvailable = function (success) {
+exports.isAvailable = function (success, error, args) {
     success(true,false);
 };
 
@@ -46,33 +44,33 @@ exports.isAvailable = function (success) {
  *      Interface arguments
  */
 exports.open = function (success, error, args) {
-    var props = args[0];
+    var props   = args[0],
+        mailto  = 'mailto:' + props.to,
+        options = '';
 
-    if (!(Windows.ApplicationModel.Email==undefined)) {
-        var email = exports.draftUtil.getDraftWithProperties(props);
-
-        Windows.ApplicationModel.Email.EmailManager
-            .showComposeNewEmailAsync(email)
-            .done(function () {
-                if (Debug.debuggerEnabled) {
-                    success();
-                    console.log('degugmode');
-                } else {
-                    Windows.UI.WebUI.WebUIApplication.addEventListener("resuming", function () {
-                        success();
-                    }, false);
-                }
-                
-            });
-    } else {
-        var mailTo = exports.draftUtil.getMailTo(props);
-        Windows.System.Launcher.launchUriAsync(mailTo).then(
-           function (mailToSuccess) {
-               if (mailToSuccess) {
-                   success();
-               }
-           });
+    if (props.subject !== '') {
+        options = options + '&subject=' + props.subject;
     }
+
+    if (props.body !== '') {
+        options = options + '&body=' + props.body;
+    }
+
+    if (props.cc !== '') {
+        options = options + '&cc=' + props.cc;
+    }
+
+    if (props.bcc !== '') {
+        options = options + '&bcc=' + props.bcc;
+    }
+
+    if (options !== '') {
+        mailto = mailto + '?' + options.substring(1);
+    }
+
+    window.location.href = mailto;
+
+    success();
 };
 
 require('cordova/exec/proxy').add('EmailComposer', exports);
